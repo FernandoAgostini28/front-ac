@@ -86,8 +86,8 @@ jobs:
       if: success()
       uses: actions/upload-artifact@v1
       with:
-        name: deploy_dist
-        path: dist
+        name: deploy_build
+        path: build
 
   ftp-deploy:
     needs: build
@@ -99,14 +99,14 @@ jobs:
       if: success()
       uses: actions/download-artifact@v1
       with:
-        name: deploy_dist
-        path: dist
+        name: deploy_build
+        path: build
     - name: Deploy to FTP
       uses: SamKirkland/FTP-Deploy-Actions@master
       with:
         server: ${{ secrets.FTP_HOST }}
         username: ${{ secrets.FTP_USER }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: dist/
+        local-dir: build/
         server-dir: temp/
         # dangerous-clean-slate: true # optional
