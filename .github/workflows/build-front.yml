@@ -18,28 +18,10 @@ jobs:
         with:
           node-version: '14.17.6'
 
-      - name: Build Project
-        run: |
-          npm install
-          npm run build
-
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@4.3.2
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./tmp/
-          include: | 
-            **build/media/*/**
-            index.html
-          exclude: |
-            **/.git*,
-            **/.git*/**,
-            **/node_modules/**,
-            **/public/**,
-            **/.github/worflows
-            **/src/**]
+      # - name: Build Project
+      #   run: |
+      #     npm install
+      #     npm run build
 
       - name: Build Project frontend
         run: |
