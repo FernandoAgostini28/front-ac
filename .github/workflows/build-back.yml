@@ -90,7 +90,7 @@ jobs:
         path: build
 
   ftp-deploy:
-    needs: build
+    # needs: build
     runs-on: self-hosted
 
     steps:
