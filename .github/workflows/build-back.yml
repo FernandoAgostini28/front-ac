@@ -1,60 +1,112 @@
-name: deploy to a server back-end
+# name: deploy to a server back-end
+
+# on:
+#   # push:
+#   #   branches: [ main ]
+
+#   workflow_dispatch 
+
+# jobs:
+#   deploy:
+#     name: Deploy
+#     runs-on: ubuntu-latest
+#     steps:
+
+#       - name: Get latest code
+#         uses: actions/checkout@v2
+
+#       - name: Use Node.js 14
+#         uses: actions/setup-node@v2
+#         with:
+#           node-version: '14.17.6'
+
+#       - name: Build Project
+#         run: |
+#           npm install
+#           npm run build
+#   # deploy: 
+#   #   name: Deploy 🚀
+#   #   needs: build
+#   #   runs-on: ubuntu-latest
+#   #   steps: 
+#   #     - name: Checkout repository
+#   #       uses: actions/checkout@main
+#   #     - name: Download artifact
+#   #       uses: actions/download-artifact@main
+#   #       with: 
+#   #         name: build
+#   #         path: build
+#       - name: FTP Deploy
+#         uses: SamKirkland/FTP-Deploy-Action@4.3.2
+#         with:
+#           server: ${{ secrets.FTP_HOST }}
+#           username: ${{ secrets.FTP_USER }}
+#           password: ${{ secrets.FTP_PASSWORD }}
+#           server-dir: ./tmp/
+#           include: | 
+#             **build/media/*/**
+#             index.html
+#           exclude: |
+#             **/.git*
+#             **/.git*/**
+#             **/node_modules/**
+#             **/public/**
+#             **/.github/worflows
+#             **/src/**
+
+#       - name: Build Project frontend go to back
+#         run: |
+#           echo "Deploy frontend"
+#           sleep 10s
+name: Deploy to FTP On-Premise - Project ABC
 
 on:
-  # push:
-  #   branches: [ main ]
+  push:
+    branches:
+      - main
 
-  workflow_dispatch 
+  # the follow line allow this script to be started manually.
+  workflow_dispatch:
 
 jobs:
-  deploy:
-    name: Deploy
+  build:
+
     runs-on: ubuntu-latest
+
     steps:
-
-      - name: Get latest code
-        uses: actions/checkout@v2
-
-      - name: Use Node.js 14
-        uses: actions/setup-node@v2
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
         with:
           node-version: '14.17.6'
+    - name: Install packages with NPM
+      run: npm install
+    - name: Build for production
+      run: npm run build 
+    - name: Upload artifacts to be used in next job
+      if: success()
+      uses: actions/upload-artifact@v1
+      with:
+        name: deploy_dist
+        path: dist
 
-      - name: Build Project
-        run: |
-          npm install
-          npm run build
-  # deploy: 
-  #   name: Deploy 🚀
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps: 
-  #     - name: Checkout repository
-  #       uses: actions/checkout@main
-  #     - name: Download artifact
-  #       uses: actions/download-artifact@main
-  #       with: 
-  #         name: build
-  #         path: build
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@4.3.2
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: .tmp/
-          include: | 
-            **build/media/*/**
-            index.html
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            **/public/**
-            **/.github/worflows
-            **/src/**
+  ftp-deploy:
+    needs: build
+    runs-on: self-hosted
 
-      - name: Build Project frontend go to back
-        run: |
-          echo "Deploy frontend"
-          sleep 10s
+    steps:
+
+    - name: Download artifacts created at previous job
+      if: success()
+      uses: actions/download-artifact@v1
+      with:
+        name: deploy_dist
+        path: dist
+    - name: Deploy to FTP
+      uses: SamKirkland/FTP-Deploy-Actions@master
+      with:
+        server: ${{ secrets.FTP_HOST }}
+        username: ${{ secrets.FTP_USER }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: dist/
+        server-dir: temp/
+        # dangerous-clean-slate: true # optional
