@@ -20,6 +20,10 @@ jobs:
       #   with:
       #     node-version: '14.17.6'
 
+      - name: Build Project
+        run: |
+          npm iiinstall
+          
       # - name: Build Project
       #   run: |
       #     npm install
