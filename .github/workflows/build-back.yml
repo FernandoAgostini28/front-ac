@@ -37,7 +37,16 @@ jobs:
         with:
           name: build
           path: build
-      # - name: Deploy to FTP
+          
+      - name: Deploy to FTP
+        uses: SamKirkland/FTP-Deploy-Actions@master
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: build/
+          server-dir: temp/
+          # dangerous-clean-slate: true # optional
       - name: Build Project frontend go to back
         run: |
           echo "Deploy frontend"
