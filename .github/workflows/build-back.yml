@@ -34,7 +34,8 @@ jobs:
       - name: Run a multi-line script
         run: |
           mkdir buildftp
-          tar -cvf buildftp/deploy.tar ${{ github.workspace }}/build
+          tar -cvf buildftp/deploy.tar build
+      #    tar -cvf buildftp/deploy.tar ${{ github.workspace }}/build
         
       # - name: Run a multi-line script
       #   run: |
@@ -54,15 +55,15 @@ jobs:
         run: |
           ls ${{ github.workspace }}/buildftp
 
-      - name: Deploy to FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.2
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: buildftp/
-          server-dir: temp/
-          # dangerous-clean-slate: true # optional
+      # - name: Deploy to FTP
+      #   uses: SamKirkland/FTP-Deploy-Action@4.3.2
+      #   with:
+      #     server: ${{ secrets.FTP_HOST }}
+      #     username: ${{ secrets.FTP_USER }}
+      #     password: ${{ secrets.FTP_PASSWORD }}
+      #     local-dir: buildftp/
+      #     server-dir: temp/
+      #     dangerous-clean-slate: true # optional
       - name: Build Project frontend go to back
         run: |
           echo "Deploy frontend"
