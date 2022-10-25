@@ -33,8 +33,8 @@ jobs:
         
       - name: Run a multi-line script
         run: |
-          mkdir buidftp
-          tar -cvf buidftp/deploy.tar ${{ github.workspace }}/build
+          mkdir buildftp
+          tar -cvf buildftp/deploy.tar ${{ github.workspace }}/build
         
       # - name: Run a multi-line script
       #   run: |
@@ -52,7 +52,7 @@ jobs:
       # listar repositorio
       - name: List files in the repository
         run: |
-          ls ${{ github.workspace }}
+          ls ${{ github.workspace }}/buildftp
 
       # - name: Deploy to FTP
       #   uses: SamKirkland/FTP-Deploy-Action@4.3.2
