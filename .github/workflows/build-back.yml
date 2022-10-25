@@ -24,6 +24,35 @@ jobs:
         run: |
           npm install
           npm run build
+      - name: Upload artifacts to be used in next job
+      if: success()
+      uses: actions/upload-artifact@v1
+      with:
+        name: build
+        path: build
+
+  ftp-deploy:
+    needs: build
+    runs-on: self-hosted
+
+    steps:
+
+      - name: Download artifacts created at previous job
+        if: success()
+        uses: actions/download-artifact@v1
+        with:
+          name: build
+          path: build
+      - name: Deploy to FTP
+        uses: SamKirkland/FTP-Deploy-Actions@master
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: build/
+          server-dir: temp/
+          # dangerous-clean-slate: true # optional
+
   # deploy: 
   #   name: Deploy 🚀
   #   needs: build
