@@ -51,7 +51,7 @@ jobs:
       # listar repositorio
       - name: List files in the repository
         run: |
-          ls ${{ github.workspace }}/build
+          ls ${{ github.workspace }}
           
 
       # - name: Deploy to FTP
