@@ -54,14 +54,14 @@ jobs:
         run: |
           ls ${{ github.workspace }}/buildftp
 
-      # - name: Deploy to FTP
-      #   uses: SamKirkland/FTP-Deploy-Action@4.3.2
-      #   with:
-      #     server: ${{ secrets.FTP_HOST }}
-      #     username: ${{ secrets.FTP_USER }}
-      #     password: ${{ secrets.FTP_PASSWORD }}
-      #     local-dir: build/
-      #     server-dir: temp/
+      - name: Deploy to FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.3.2
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: buildftp/
+          server-dir: temp/
           # dangerous-clean-slate: true # optional
       - name: Build Project frontend go to back
         run: |
