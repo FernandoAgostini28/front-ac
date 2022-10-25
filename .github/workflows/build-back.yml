@@ -25,11 +25,11 @@ jobs:
           npm install
           npm run build
       - name: Upload artifacts to be used in next job
-      if: success()
-      uses: actions/upload-artifact@v1
-      with:
-        name: build
-        path: build
+        if: success()
+        uses: actions/upload-artifact@v1
+        with:
+          name: build
+          path: build
 
   # ftp-deploy:
   #   needs: build
@@ -42,7 +42,7 @@ jobs:
   #       uses: actions/download-artifact@v1
   #       with:
   #         name: build
-  #         path: build
+    #         path: build
   #     - name: Deploy to FTP
   #       uses: SamKirkland/FTP-Deploy-Actions@master
   #       with:
