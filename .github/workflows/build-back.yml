@@ -30,19 +30,22 @@ jobs:
         with:
           name: build
           path: build
-
       - name: Run a multi-line script
         run: |
-          mkdir ../build
           cp -TR . ../build
           tar -cvf deploy.tar ../build/
+      # - name: Run a multi-line script
+      #   run: |
+      #     mkdir ../build
+      #     cp -TR . ../build
+      #     tar -cvf deploy.tar ../build/
 
-      - name: Download artifacts created at previous job
-        if: success()
-        uses: actions/download-artifact@v1
-        with:
-          name: deploy.tar
-          path: build
+      # - name: Download artifacts created at previous job
+      #   if: success()
+      #   uses: actions/download-artifact@v1
+      #   with:
+      #     name: deploy.tar
+      #     path: build
 
       # listar repositorio
       - name: List files in the repository
