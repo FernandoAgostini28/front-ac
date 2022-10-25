@@ -33,6 +33,7 @@ jobs:
         
       - name: Run a multi-line script
         run: |
+          mkdir ${{ github.workspace }}/buidftp
           tar -cvf buidftp/deploy.tar ${{ github.workspace }}/build
         
       # - name: Run a multi-line script
