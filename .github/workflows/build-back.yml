@@ -31,10 +31,10 @@ jobs:
           name: build
           path: build
         
-      # - name: Run a multi-line script
-      #   run: |
-      #     cp ../build
-      #     ls -a
+      - name: Run a multi-line script
+        run: |
+          cp -TR . ${{ github.workspace }}/build
+          tar -cvf deploy.tar ${{ github.workspace }}/build
         
       # - name: Run a multi-line script
       #   run: |
