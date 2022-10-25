@@ -33,7 +33,7 @@ jobs:
         
       - name: Run a multi-line script
         run: |
-          cp ../build
+          cp build
           ls -a
         
       # - name: Run a multi-line script
