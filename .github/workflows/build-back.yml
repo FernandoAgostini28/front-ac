@@ -67,6 +67,7 @@ on:
 
   # the follow line allow this script to be started manually.
   workflow_dispatch
+  workflow_dispatch:
 
 jobs:
   build:
