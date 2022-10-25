@@ -31,27 +31,27 @@ jobs:
           name: build
           path: build
 
-  ftp-deploy:
-    needs: build
-    runs-on: self-hosted
+  # ftp-deploy:
+  #   needs: build
+  #   runs-on: self-hosted
 
-    steps:
+  #   steps:
 
-      - name: Download artifacts created at previous job
-        if: success()
-        uses: actions/download-artifact@v1
-        with:
-          name: build
-            path: build
-      - name: Deploy to FTP
-        uses: SamKirkland/FTP-Deploy-Actions@master
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: build/
-          server-dir: temp/
-          # dangerous-clean-slate: true # optional
+  #     - name: Download artifacts created at previous job
+  #       if: success()
+  #       uses: actions/download-artifact@v1
+  #       with:
+  #         name: build
+  #           path: build
+  #     - name: Deploy to FTP
+  #       uses: SamKirkland/FTP-Deploy-Actions@master
+  #       with:
+  #         server: ${{ secrets.FTP_HOST }}
+  #         username: ${{ secrets.FTP_USER }}
+  #         password: ${{ secrets.FTP_PASSWORD }}
+  #         local-dir: build/
+  #         server-dir: temp/
+  #         # dangerous-clean-slate: true # optional
 
   # deploy: 
   #   name: Deploy 🚀
