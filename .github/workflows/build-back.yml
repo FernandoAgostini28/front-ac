@@ -31,12 +31,24 @@ jobs:
           name: build
           path: build
 
-  deploy:
-    needs: build
-    runs-on: self-hosted
+      - name: Download artifacts created at previous job
+        if: success()
+        uses: actions/download-artifact@v1
+        with:
+          name: build
+          path: build
+      # - name: Deploy to FTP
+      - name: Build Project frontend go to back
+        run: |
+          echo "Deploy frontend"
+          sleep 10s
 
-    steps:
+  # deploy:
+  #   needs: build
+  #   runs-on: self-hosted
 
+  #   steps:
+      
       # - name: Download artifacts created at previous job
       #   if: success()
       #   uses: actions/download-artifact@v1
@@ -83,10 +95,10 @@ jobs:
       #       **/.github/worflows
       #       **/src/**
 
-      - name: Build Project frontend go to back
-        run: |
-          echo "Deploy frontend"
-          sleep 10s
+      # - name: Build Project frontend go to back
+      #   run: |
+      #     echo "Deploy frontend"
+      #     sleep 10s
 
 
 # name: Deploy to FTP On-Premise - Project ABC
