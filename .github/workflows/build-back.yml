@@ -33,7 +33,7 @@ jobs:
         
       - name: Run a multi-line script
         run: |
-          tar -cvf deploy.tar ${{ github.workspace }}/build
+          tar -cvf buidftp/deploy.tar ${{ github.workspace }}/build
         
       # - name: Run a multi-line script
       #   run: |
@@ -51,7 +51,7 @@ jobs:
       # listar repositorio
       - name: List files in the repository
         run: |
-          ls ${{ github.workspace }}
+          ls ${{ github.workspace }}/buidftp
           
 
       # - name: Deploy to FTP
