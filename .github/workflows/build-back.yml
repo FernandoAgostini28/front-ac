@@ -32,34 +32,34 @@ jobs:
           path: build
       - name: Run a multi-line script
         run: |
-          cp -TR . ../build
-          tar -cvf deploy.tar ../build/
+          tar -cvf deploy.tar ../build/build
       # - name: Run a multi-line script
       #   run: |
       #     mkdir ../build
       #     cp -TR . ../build
       #     tar -cvf deploy.tar ../build/
 
-      - name: Download artifacts created at previous job
-        if: success()
-        uses: actions/download-artifact@v1
-        with:
-          name: deploy.tar
-          path: build
+      # - name: Download artifacts created at previous job
+      #   if: success()
+      #   uses: actions/download-artifact@v1
+      #   with:
+      #     name: deploy.tar
+      #     path: build
 
       # listar repositorio
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
+          
 
-      - name: Deploy to FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.2
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: build/
-          server-dir: temp/
+      # - name: Deploy to FTP
+      #   uses: SamKirkland/FTP-Deploy-Action@4.3.2
+      #   with:
+      #     server: ${{ secrets.FTP_HOST }}
+      #     username: ${{ secrets.FTP_USER }}
+      #     password: ${{ secrets.FTP_PASSWORD }}
+      #     local-dir: build/
+      #     server-dir: temp/
           # dangerous-clean-slate: true # optional
       - name: Build Project frontend go to back
         run: |
