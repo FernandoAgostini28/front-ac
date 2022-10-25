@@ -30,9 +30,10 @@ jobs:
         with:
           name: build
           path: build
+
       - name: Run a multi-line script
         run: |
-          tar -cvf deploy.tar ../build/build
+          tar -cvf deploy.tar ../build/
       # - name: Run a multi-line script
       #   run: |
       #     mkdir ../build
