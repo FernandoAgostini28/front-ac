@@ -33,7 +33,7 @@ jobs:
         
       - name: Run a multi-line script
         run: |
-          cp build
+          cp ../build
           ls -a
         
       # - name: Run a multi-line script
@@ -52,7 +52,7 @@ jobs:
       # listar repositorio
       - name: List files in the repository
         run: |
-          ls ${{ github.workspace }}
+          ls ${{ github.workspace }}/build
           
 
       # - name: Deploy to FTP
