@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: '14.17.6'
 
-      # - name: Build Project teste
+      # - name: Build Project testes
       #   run: |
       #     npm install
       #     npm run build
