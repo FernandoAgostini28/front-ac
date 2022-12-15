@@ -19,8 +19,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo wget https://www.openssl.org/source/openssl-1.0.2s.tar.gz
-          tar xvf openssl-1.0.2.tar.gz
-          cd openssl-1.0.2
+          tar xvf openssl-1.0.2s.tar.gz
+          cd openssl-1.0.2s
           ./config -Wl,--enable-new-dtags,-rpath,'$(LIBRPATH)'
           make
           sudo make install
