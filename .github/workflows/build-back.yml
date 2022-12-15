@@ -1,182 +1,184 @@
-name: deploy to a server back-end
-
-on:
-  # push:
-  #   branches: [ main ]
-
-  workflow_dispatch 
-
-jobs:
-  build:
-    name: Deploy
-    runs-on: ubuntu-latest
-    steps:
-
-      - name: Get latest code
-        uses: actions/checkout@v2
-
-      - name: Use Node.js 14
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14.17.6'
-
-      - name: Build Project
-        run: |
-          npm install
-          npm run build
-      - name: Upload artifacts to be used in next job
-        if: success()
-        uses: actions/upload-artifact@v1
-        with:
-          name: build
-          path: build
-        
-      - name: Run a multi-line script
-        run: |
-          mkdir buildftp
-          tar -cvf buildftp/deploy.tar build
-      #    tar -cvf buildftp/deploy.tar ${{ github.workspace }}/build
-        
-      # - name: Run a multi-line script
-      #   run: |
-      #     mkdir ../build
-      #     cp -TR . ../build
-      #     tar -cvf deploy.tar ../build/
-
-      # - name: Download artifacts created at previous job
-      #   if: success()
-      #   uses: actions/download-artifact@v1
-      #   with:
-      #     name: deploy.tar
-      #     path: build
-
-      # listar repositorio
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}/buildftp
-
-      - name: Deploy to FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.2
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: buildftp/
-          server-dir: temp/
-          dangerous-clean-slate: true # optional
-      - name: Build Project frontend go to back
-        run: |
-          echo "Deploy frontend"
-          sleep 10s
-
-  # deploy:
-  #   needs: build
-  #   runs-on: self-hosted
-
-  #   steps:
-      
-      # - name: Download artifacts created at previous job
-      #   if: success()
-      #   uses: actions/download-artifact@v1
-      #   with:
-      #     name: build
-      #       path: build
-      # - name: Deploy to FTP
-      #   uses: SamKirkland/FTP-Deploy-Actions@master
-      #   with:
-      #     server: ${{ secrets.FTP_HOST }}
-      #     username: ${{ secrets.FTP_USER }}
-      #     password: ${{ secrets.FTP_PASSWORD }}
-      #     local-dir: build/
-      #     server-dir: temp/
-          # dangerous-clean-slate: true # optional
-
-  # deploy: 
-  #   name: Deploy 🚀
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps: 
-  #     - name: Checkout repository
-  #       uses: actions/checkout@main
-  #     - name: Download artifact
-  #       uses: actions/download-artifact@main
-  #       with: 
-  #         name: build
-  #         path: build
-      # - name: FTP Deploy
-      #   uses: SamKirkland/FTP-Deploy-Action@4.3.2
-      #   with:
-      #     server: ${{ secrets.FTP_HOST }}
-      #     username: ${{ secrets.FTP_USER }}
-      #     password: ${{ secrets.FTP_PASSWORD }}
-      #     server-dir: ./tmp/
-      #     include: | 
-      #       **build/media/*/**
-      #       index.html
-      #     exclude: |
-      #       **/.git*
-      #       **/.git*/**
-      #       **/node_modules/**
-      #       **/public/**
-      #       **/.github/worflows
-      #       **/src/**
-
-      # - name: Build Project frontend go to back
-      #   run: |
-      #     echo "Deploy frontend"
-      #     sleep 10s
-
-
-# name: Deploy to FTP On-Premise - Project ABC
+# name: deploy to a server back-end
 
 # on:
-#   push:
-#     branches:
-#       - main
+#   # push:
+#   #   branches: [ main ]
 
-#   # the follow line allow this script to be started manually.
-#   workflow_dispatch
-#   workflow_dispatch:
+#   workflow_dispatch 
 
 # jobs:
 #   build:
-
+#     name: Deploy
 #     runs-on: ubuntu-latest
-
-#     steps:
-#     - uses: actions/checkout@v2
-#     - uses: actions/setup-node@v2
-#       with:
-#         node-version: '14.17.6'
-#     - name: Install packages with NPM
-#       run: npm install
-#     - name: Build for production
-#       run: npm run build 
-#     - name: Upload artifacts to be used in next job
-#       if: success()
-#       uses: actions/upload-artifact@v1
-#       with:
-#         name: build
-#         path: build
-
-#   ftp-deploy:
-#     needs: build
-#     runs-on: self-hosted
-
 #     steps:
 
-#     - name: Download artifacts created at previous job
-#       if: success()
-#       uses: actions/download-artifact@v1
-#       with:
-#         name: build
-#         path: build
-#     - name: Deploy to FTP
-#       uses: SamKirkland/FTP-Deploy-Actions@master
-#       with:
-#         server: ${{ secrets.FTP_HOST }}
-#         username: ${{ secrets.FTP_USER }}
-#         password: ${{ secrets.FTP_PASSWORD }}
-#         local-dir: build/
-#         server-dir: temp/
-#         # dangerous-clean-slate: true # optional
+#       - name: Get latest code
+#         uses: actions/checkout@v2
+
+#       - name: Use Node.js 14
+#         uses: actions/setup-node@v2
+#         with:
+#           node-version: '14.17.6'
+
+#       - name: Build Project
+#         run: |
+#           npm install
+#           npm run build
+#       - name: Upload artifacts to be used in next job
+#         if: success()
+#         uses: actions/upload-artifact@v1
+#         with:
+#           name: build
+#           path: build
+        
+#       - name: Run a multi-line script
+#         run: |
+#           mkdir  backend_name-temp/dist/public
+#           cp -r www/* ../$backend_name-temp/dist/public
+#           mkdir buildftp
+#           tar -cvf buildftp/deploy.tar build
+#       #    tar -cvf buildftp/deploy.tar ${{ github.workspace }}/build
+        
+#       # - name: Run a multi-line script
+#       #   run: |
+#       #     mkdir ../build
+#       #     cp -TR . ../build
+#       #     tar -cvf deploy.tar ../build/
+
+#       # - name: Download artifacts created at previous job
+#       #   if: success()
+#       #   uses: actions/download-artifact@v1
+#       #   with:
+#       #     name: deploy.tar
+#       #     path: build
+
+#       # listar repositorio
+#       - name: List files in the repository
+#         run: |
+#           ls ${{ github.workspace }}/buildftp
+
+#       - name: Deploy to FTP
+#         uses: SamKirkland/FTP-Deploy-Action@4.3.2
+#         with:
+#           server: ${{ secrets.FTP_HOST }}
+#           username: ${{ secrets.FTP_USER }}
+#           password: ${{ secrets.FTP_PASSWORD }}
+#           local-dir: buildftp/
+#           server-dir: temp/
+#           dangerous-clean-slate: true # optional
+#       - name: Build Project frontend go to back
+#         run: |
+#           echo "Deploy frontend"
+#           sleep 10s
+
+#   # deploy:
+#   #   needs: build
+#   #   runs-on: self-hosted
+
+#   #   steps:
+      
+#       # - name: Download artifacts created at previous job
+#       #   if: success()
+#       #   uses: actions/download-artifact@v1
+#       #   with:
+#       #     name: build
+#       #       path: build
+#       # - name: Deploy to FTP
+#       #   uses: SamKirkland/FTP-Deploy-Actions@master
+#       #   with:
+#       #     server: ${{ secrets.FTP_HOST }}
+#       #     username: ${{ secrets.FTP_USER }}
+#       #     password: ${{ secrets.FTP_PASSWORD }}
+#       #     local-dir: build/
+#       #     server-dir: temp/
+#           # dangerous-clean-slate: true # optional
+
+#   # deploy: 
+#   #   name: Deploy 🚀
+#   #   needs: build
+#   #   runs-on: ubuntu-latest
+#   #   steps: 
+#   #     - name: Checkout repository
+#   #       uses: actions/checkout@main
+#   #     - name: Download artifact
+#   #       uses: actions/download-artifact@main
+#   #       with: 
+#   #         name: build
+#   #         path: build
+#       # - name: FTP Deploy
+#       #   uses: SamKirkland/FTP-Deploy-Action@4.3.2
+#       #   with:
+#       #     server: ${{ secrets.FTP_HOST }}
+#       #     username: ${{ secrets.FTP_USER }}
+#       #     password: ${{ secrets.FTP_PASSWORD }}
+#       #     server-dir: ./tmp/
+#       #     include: | 
+#       #       **build/media/*/**
+#       #       index.html
+#       #     exclude: |
+#       #       **/.git*
+#       #       **/.git*/**
+#       #       **/node_modules/**
+#       #       **/public/**
+#       #       **/.github/worflows
+#       #       **/src/**
+
+#       # - name: Build Project frontend go to back
+#       #   run: |
+#       #     echo "Deploy frontend"
+#       #     sleep 10s
+
+
+# # name: Deploy to FTP On-Premise - Project ABC
+
+# # on:
+# #   push:
+# #     branches:
+# #       - main
+
+# #   # the follow line allow this script to be started manually.
+# #   workflow_dispatch
+# #   workflow_dispatch:
+
+# # jobs:
+# #   build:
+
+# #     runs-on: ubuntu-latest
+
+# #     steps:
+# #     - uses: actions/checkout@v2
+# #     - uses: actions/setup-node@v2
+# #       with:
+# #         node-version: '14.17.6'
+# #     - name: Install packages with NPM
+# #       run: npm install
+# #     - name: Build for production
+# #       run: npm run build 
+# #     - name: Upload artifacts to be used in next job
+# #       if: success()
+# #       uses: actions/upload-artifact@v1
+# #       with:
+# #         name: build
+# #         path: build
+
+# #   ftp-deploy:
+# #     needs: build
+# #     runs-on: self-hosted
+
+# #     steps:
+
+# #     - name: Download artifacts created at previous job
+# #       if: success()
+# #       uses: actions/download-artifact@v1
+# #       with:
+# #         name: build
+# #         path: build
+# #     - name: Deploy to FTP
+# #       uses: SamKirkland/FTP-Deploy-Actions@master
+# #       with:
+# #         server: ${{ secrets.FTP_HOST }}
+# #         username: ${{ secrets.FTP_USER }}
+# #         password: ${{ secrets.FTP_PASSWORD }}
+# #         local-dir: build/
+# #         server-dir: temp/
+# #         # dangerous-clean-slate: true # optional
