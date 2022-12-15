@@ -24,15 +24,17 @@ jobs:
           ./config -Wl,--enable-new-dtags,-rpath,'$(LIBRPATH)'
           make
           sudo make install
+          ln -s /usr/local/ssl/bin/openssl /usr/bin/openssl
+          ln -s /usr/local/ssl/bin/openssl /usr/local/bin/openssl
 
       - name: baixar OpenVPN
         run: |
-          sudo apt-get install liblzo2-dev libssl-dev libpam0g-dev
+          sudo apt-get install liblzo2-dev libssl-dev libpam0g-dev openssl
           sudo wget https://swupdate.openvpn.org/community/releases/openvpn-2.4.7.tar.gz
           tar xfz openvpn-2.4.7.tar.gz
           cd openvpn-2.4.7 
           ./configure --disable-plugin-auth-pam
-          sud make 
+          make 
           sudo make install
           
           
