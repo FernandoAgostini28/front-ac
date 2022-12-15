@@ -1,8 +1,9 @@
-name: bulid front-end
+name: Push to master
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   deploy:
