@@ -23,7 +23,7 @@ jobs:
           cd openvpn-2.4.7 
           ./configure --disable-plugin-auth-pam
           make 
-          make install
+          sudo make install
           
 
 
