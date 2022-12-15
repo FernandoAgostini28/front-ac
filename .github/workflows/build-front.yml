@@ -14,15 +14,35 @@ jobs:
       - name: Get latest code
         uses: actions/checkout@v2
 
-      # - name: Use Node.js 14
-      #   uses: actions/setup-node@v2
-      #   with:
-      #     node-version: '14.17.6'
+      - name: Install OpenVPN
+        run: |
+          sudo apt-get update
+          sudo wget https://swupdate.openvpn.org/community/releases/openvpn-2.4.7.tar.gz
+          sudo tar xfz openvpn-2.4.7.tar.gz
+          sudo cd openvpn-2.4.7 
+          sudo ls 
 
-      # - name: Build Project testes
+
+        # wget https://swupdate.openvpn.org/community/releases/openvpn-2.4.7.tar.gz
+        # tar xfz openvpn-2.4.7.tar.gz 
+        #cd openvpn-2.4.7 
+        #./configure
+
+      # - name: Install OpenVPN
       #   run: |
-      #     npm install
-      #     npm run build
+      #     sudo apt-get update
+      #     sudo apt-get --assume-yes --no-install-recommends install openvpn
+
+      # - name: Setup VPN config
+      #   run: |
+      #     echo "${{ secrets.SECRET_USERNAME_PASSWORD }}" > secret.txt
+      # - name: Connect VPN
+      #   run: |
+      #     sudo openvpn --config ".github/vpn/safiragit__ssl_vpn_config.ovpn" --log "vpn.log" --daemon
+      # - name: Wait for a VPN connection
+      #   timeout-minutes: 1
+      #   run: |
+      #     until ping -c1 ${{ secrets.FTP_SERVER }}; do sleep 2; done
 
       - name: Build Project frontend
         run: |
