@@ -14,10 +14,20 @@ jobs:
       - name: Get latest code
         uses: actions/checkout@v2
 
+       
+      # - name: Install OpenVPN
+      #   run: |
+      #     sudo apt-get update
+      #     sudo wget https://www.openssl.org/source/openssl-1.0.2s.tar.gz
+      #     tar xvf openssl-1.0.2.tar.gz
+      #     ./config -Wl,--enable-new-dtags,-rpath,'$(LIBRPATH)'
+      #     make
+      #     sudo make install
+
       - name: Install OpenVPN
         run: |
           sudo apt-get update
-          sudo apt-get install liblzo2-dev
+          sudo apt-get install liblzo2-dev libssl-dev libpam0g-dev
           sudo wget https://swupdate.openvpn.org/community/releases/openvpn-2.4.7.tar.gz
           tar xfz openvpn-2.4.7.tar.gz
           cd openvpn-2.4.7 
