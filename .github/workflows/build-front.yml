@@ -21,7 +21,7 @@ jobs:
           sudo wget https://swupdate.openvpn.org/community/releases/openvpn-2.4.7.tar.gz
           tar xfz openvpn-2.4.7.tar.gz
           cd openvpn-2.4.7 
-          ./configure 
+          ./configure --disable-plugin-auth-pam
           make 
           make install
           
