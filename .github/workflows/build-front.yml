@@ -15,18 +15,18 @@ jobs:
         uses: actions/checkout@v2
 
       
-      - name: Install OpenVPN
+      - name: Install openssl
         run: |
           sudo apt-get update
           sudo wget https://www.openssl.org/source/openssl-1.0.2s.tar.gz
           tar xvf openssl-1.0.2.tar.gz
+          cd openssl-1.0.2
           ./config -Wl,--enable-new-dtags,-rpath,'$(LIBRPATH)'
           make
           sudo make install
 
-      - name: Install OpenVPN
+      - name: baixar OpenVPN
         run: |
-          sudo apt-get update
           sudo apt-get install liblzo2-dev libssl-dev libpam0g-dev
           sudo wget https://swupdate.openvpn.org/community/releases/openvpn-2.4.7.tar.gz
           tar xfz openvpn-2.4.7.tar.gz
@@ -34,7 +34,7 @@ jobs:
           ./configure 
           
           
-      - name: Install OpenVPN
+      - name: Install OpenVPN 
         run: |
           
           ./configure --disable-plugin-auth-pam
