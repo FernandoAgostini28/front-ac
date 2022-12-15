@@ -2,7 +2,7 @@ name: bulid front-end
 
 on:
   push:
-  branches: [ main ]
+    branches: [ main ]
 
 jobs:
   deploy:
