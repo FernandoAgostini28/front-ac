@@ -30,9 +30,9 @@ jobs:
       - name: baixar OpenVPN
         run: |
           sudo apt-get install liblzo2-dev libssl-dev libpam0g-dev openssl
-          sudo wget https://swupdate.openvpn.org/community/releases/openvpn-2.4.12.tar.gz
-          tar xfz openvpn-2.4.12.tar.gz
-          cd openvpn-2.4.12
+          sudo wget https://swupdate.openvpn.org/community/releases/openvpn-2.5.8.tar.gz
+          tar xfz openvpn-2.5.8.tar.gz
+          cd openvpn-2.5.8
           ./configure --disable-plugin-auth-pam
           make 
           sudo make install
