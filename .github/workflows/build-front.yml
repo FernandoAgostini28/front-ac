@@ -27,15 +27,22 @@ jobs:
       #     ln -s /usr/local/ssl/bin/openssl /usr/bin/openssl
       #     ln -s /usr/local/ssl/bin/openssl /usr/local/bin/openssl
 
-      - name: baixar OpenVPN
+      # - name: baixar OpenVPN
+      #   run: |
+      #     sudo apt-get install liblzo2-dev libssl-dev libpam0g-dev openssl
+      #     sudo wget https://swupdate.openvpn.org/community/releases/openvpn-2.5.8.tar.gz
+      #     tar xfz openvpn-2.5.8.tar.gz
+      #     cd openvpn-2.5.8
+      #     ./configure --disable-plugin-auth-pam
+      #     make 
+      #     sudo make install
+
+      - name: Generate environment dev
         run: |
-          sudo apt-get install liblzo2-dev libssl-dev libpam0g-dev openssl
-          sudo wget https://swupdate.openvpn.org/community/releases/openvpn-2.5.8.tar.gz
-          tar xfz openvpn-2.5.8.tar.gz
-          cd openvpn-2.5.8
-          ./configure --disable-plugin-auth-pam
-          make 
-          sudo make install
+          touch environments/environment.development.ts
+          echo '${{ secrets.ENVIRONMENT_HOMOLOG }}' >> environments/environment.development.ts
+          cat environments/environment.development.ts
+          ls
           
           
       
@@ -51,16 +58,16 @@ jobs:
       #     sudo apt-get update
       #     sudo apt-get --assume-yes --no-install-recommends install openvpn
 
-      # - name: Setup VPN config
-      #   run: |
-      #     echo "${{ secrets.SECRET_USERNAME_PASSWORD }}" > secret.txt
-      # - name: Connect VPN
-      #   run: |
-      #     sudo openvpn --config ".github/vpn/safiragit__ssl_vpn_config.ovpn" --log "vpn.log" --daemon
-      # - name: Wait for a VPN connection
-      #   timeout-minutes: 1
-      #   run: |
-      #     until ping -c1 ${{ secrets.FTP_SERVER }}; do sleep 2; done
+      - name: Setup VPN config
+        run: |
+          echo "${{ secrets.SECRET_USERNAME_PASSWORD }}" > secret.txt
+      - name: Connect VPN
+        run: |
+          sudo openvpn --config ".github/vpn/safiragit__ssl_vpn_config.ovpn" --log "vpn.log" --daemon
+      - name: Wait for a VPN connection
+        timeout-minutes: 1
+        run: |
+          until ping -c1 ${{ secrets.FTP_SERVER }}; do sleep 2; done
 
       - name: Build Project frontend
         run: |
