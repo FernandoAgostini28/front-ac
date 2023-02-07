@@ -41,6 +41,7 @@ jobs:
         run: |
           cd src
           mkdir ../environments
+          cd environments
           touch environment.development.ts
           echo '${{ secrets.ENVIRONMENT_HOMOLOG }}' >> environment.development.ts
           cat environment.development.ts
