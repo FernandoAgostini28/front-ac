@@ -39,9 +39,9 @@ jobs:
 
       - name: Generate environment dev
         run: |
-          touch environments/environment.development.ts
-          echo '${{ secrets.ENVIRONMENT_HOMOLOG }}' >> environments/environment.development.ts
-          cat environments/environment.development.ts
+          touch environment.development.ts
+          echo '${{ secrets.ENVIRONMENT_HOMOLOG }}' >> environment.development.ts
+          cat environment.development.ts
           ls
           
           
