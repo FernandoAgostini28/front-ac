@@ -13,34 +13,11 @@ jobs:
     steps:
       - name: Get latest code
         uses: actions/checkout@v2
-
-      
-      # - name: Install openssl
-      #   run: |
-      #     sudo apt-get update
-      #     sudo wget https://www.openssl.org/source/openssl-1.0.2s.tar.gz
-      #     tar xvf openssl-1.0.2s.tar.gz
-      #     cd openssl-1.0.2s
-      #     ./config -Wl,--enable-new-dtags,-rpath,'$(LIBRPATH)'
-      #     make
-      #     sudo make install
-      #     ln -s /usr/local/ssl/bin/openssl /usr/bin/openssl
-      #     ln -s /usr/local/ssl/bin/openssl /usr/local/bin/openssl
-
-      # - name: baixar OpenVPN
-      #   run: |
-      #     sudo apt-get install liblzo2-dev libssl-dev libpam0g-dev openssl
-      #     sudo wget https://swupdate.openvpn.org/community/releases/openvpn-2.5.8.tar.gz
-      #     tar xfz openvpn-2.5.8.tar.gz
-      #     cd openvpn-2.5.8
-      #     ./configure --disable-plugin-auth-pam
-      #     make 
-      #     sudo make install
-
       - name: Generate environment test
         run: |
           cd src
           mkdir ./environments
+          touch text.txt
           cd environments
 
       - name: Generate environment homolog        
