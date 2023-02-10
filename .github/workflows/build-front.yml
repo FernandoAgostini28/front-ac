@@ -42,9 +42,6 @@ jobs:
           cd src
           mkdir ./environments
           cd environments
-          echo "${{ secrets.ENVIRONMENT_TEST }}" >> environment.ts
-
-      
 
       - name: Generate environment homolog        
         run: |
