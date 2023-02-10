@@ -43,11 +43,11 @@ jobs:
           mkdir ../environments
           cd environments
           touch environment.development.ts
-          echo '${{ secrets.ENVIRONMENT_HOMOLOG }}' >> environment.development.ts
+          echo 'Testesssssssssssssssss' >> environment.development.ts
           cat environment.development.ts
           ls
 
-         - name: Generate environment dev
+        - name: Generate environment dev
         run: |          
           cd ..          
           ls
