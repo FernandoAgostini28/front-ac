@@ -47,11 +47,6 @@ jobs:
           cat environment.development.ts
           ls
 
-        - name: Generate environment dev
-        run: |          
-          cd ..          
-          ls
-          
           
           
       
