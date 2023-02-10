@@ -37,7 +37,7 @@ jobs:
       #     make 
       #     sudo make install
 
-     - name: Generate environment test
+      - name: Generate environment test
         run: |
           cd src
           mkdir ./environments
