@@ -1,29 +1,56 @@
-name: deploy to a server back-end
+name: Push to master
 
 on:
   push:
-    branches: [ main ]
-
-  workflow_dispatch 
+    branches:
+      - main
 
 jobs:
-  build:
+  deploy:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
+
       - name: Get latest code
         uses: actions/checkout@v2
-      - name: Generate environment test
+
+      
+      # - name: Install openssl
+      #   run: |
+      #     sudo apt-get update
+      #     sudo wget https://www.openssl.org/source/openssl-1.0.2s.tar.gz
+      #     tar xvf openssl-1.0.2s.tar.gz
+      #     cd openssl-1.0.2s
+      #     ./config -Wl,--enable-new-dtags,-rpath,'$(LIBRPATH)'
+      #     make
+      #     sudo make install
+      #     ln -s /usr/local/ssl/bin/openssl /usr/bin/openssl
+      #     ln -s /usr/local/ssl/bin/openssl /usr/local/bin/openssl
+
+      # - name: baixar OpenVPN
+      #   run: |
+      #     sudo apt-get install liblzo2-dev libssl-dev libpam0g-dev openssl
+      #     sudo wget https://swupdate.openvpn.org/community/releases/openvpn-2.5.8.tar.gz
+      #     tar xfz openvpn-2.5.8.tar.gz
+      #     cd openvpn-2.5.8
+      #     ./configure --disable-plugin-auth-pam
+      #     make 
+      #     sudo make install
+
+      - name: Generate environment dev
         run: |
           cd src
-          mkdir ./environments
-          touch text.txt
+          mkdir ../environments
           cd environments
+          touch environment.development.ts
+          echo '${{ secrets.ENVIRONMENT_HOMOLOG }}' >> environment.development.ts
+          cat environment.development.ts
+          ls
 
-      - name: Generate environment homolog        
-        run: |
-          cd ..
-          ls        
+         - name: Generate environment dev
+        run: |          
+          cd ..          
+          ls
           
           
           
