@@ -37,15 +37,19 @@ jobs:
       #     make 
       #     sudo make install
 
-      - name: Generate environment dev
+     - name: Generate environment test
         run: |
           cd src
-          mkdir ../environments
+          mkdir ./environments
           cd environments
-          touch environment.development.ts
-          echo '${{ secrets.ENVIRONMENT_HOMOLOG }}' >> environment.development.ts
-          cat environment.development.ts
-          ls
+          echo "${{ secrets.ENVIRONMENT_TEST }}" >> environment.ts
+
+      
+
+      - name: Generate environment homolog        
+        run: |
+          cd ..
+          ls        
           
           
           
