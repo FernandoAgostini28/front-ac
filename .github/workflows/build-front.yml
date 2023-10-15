@@ -1,32 +1,27 @@
+name: Verificar Alterações no package.json
+
 on:
-  push:
+  pull_request:
     branches:
       - main
 
 jobs:
-  deploy:
-    name: Deploy
+  check-changes:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Get latest code
-        uses: actions/checkout@v2
-      - name: Verificar Alterações no package.json ou package-lock.json
-        id: check-changes
+      - name: Check for changes in package.json
+        id: check-package-json
+        uses: changesets/action@v4
+        with:
+          file-paths: package.json
+
+      - name: Print result
         run: |
-          if [[ -n $(git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- package.json package-lock.json) ]]; then
-              echo "Changes detected, so running this step."
-              echo "changes=true" >> $GITHUB_ENV
+          if ${{ steps.check-package-json.outputs.changed }} == 'true'; then
+            echo "Changes detected in package.json."
+            echo "changes=true" >> $GITHUB_ENV
           else
-              echo "No changes detected, so running this step."
-              echo "changes=false" >> $GITHUB_ENV
+            echo "No changes detected in package.json."
+            echo "changes=false" >> $GITHUB_ENV
           fi
-      
-      - name: Install Dependencies (If Changes Detected)
-        if: steps.check-changes.outputs.changes == 'true'
-        run: |
-          echo "Running 'Install Dependencies' because changes were detected."
-  
-      - name: Install Dependencies (If Changes not Detected)
-        if: steps.check-changes.outputs.changes == 'false'
-        run: |
-          echo "Running 'Install Dependencies' because no changes were detected."
