@@ -43,5 +43,5 @@ jobs:
           if [[ "${{ env.changes }}" == "true" ]]; then
             echo "Changes detected in the last Pull Request."
           else
-            echo "No changes detected in the last Pull Request."
+            echo "No changes detected in the last Pull Requests."
           fi
