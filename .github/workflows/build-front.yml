@@ -12,68 +12,23 @@ jobs:
     steps:
 
       - name: Get latest code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      
-      # - name: Install openssl
-      #   run: |
-      #     sudo apt-get update
-      #     sudo wget https://www.openssl.org/source/openssl-1.0.2s.tar.gz
-      #     tar xvf openssl-1.0.2s.tar.gz
-      #     cd openssl-1.0.2s
-      #     ./config -Wl,--enable-new-dtags,-rpath,'$(LIBRPATH)'
-      #     make
-      #     sudo make install
-      #     ln -s /usr/local/ssl/bin/openssl /usr/bin/openssl
-      #     ln -s /usr/local/ssl/bin/openssl /usr/local/bin/openssl
-
-      # - name: baixar OpenVPN
-      #   run: |
-      #     sudo apt-get install liblzo2-dev libssl-dev libpam0g-dev openssl
-      #     sudo wget https://swupdate.openvpn.org/community/releases/openvpn-2.5.8.tar.gz
-      #     tar xfz openvpn-2.5.8.tar.gz
-      #     cd openvpn-2.5.8
-      #     ./configure --disable-plugin-auth-pam
-      #     make 
-      #     sudo make install
-
-      - name: Generate environment dev
+      - name: Verificar Alterações no package.json ou package-lock.json
         run: |
-          cd src
-          mkdir ../environments
-          cd environments
-          touch environment.development.ts
-          echo 'Testesssssssssssssssss' >> environment.development.ts
-          cat environment.development.ts
-          ls
-
-          
-          
+          if [[ -n $(git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- package.json package-lock.json) ]]; then
+              echo echo "changes=true" >> $GITHUB_ENV
+          else
+              echo "changes=false" >> $GITHUB_ENV
+          fi
       
-          
-
-        # wget https://swupdate.openvpn.org/community/releases/openvpn-2.4.7.tar.gz
-        # tar xfz openvpn-2.4.7.tar.gz 
-        #cd openvpn-2.4.7 
-        #./configure
-
-      # - name: Install OpenVPN
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get --assume-yes --no-install-recommends install openvpn
-
-      # - name: Setup VPN config
-      #   run: |
-      #     echo "${{ secrets.SECRET_USERNAME_PASSWORD }}" > secret.txt
-      # - name: Connect VPN
-      #   run: |
-      #     sudo openvpn --config ".github/vpn/safiragit__ssl_vpn_config.ovpn" --log "vpn.log" --daemon
-      # - name: Wait for a VPN connection
-      #   timeout-minutes: 1
-      #   run: |
-      #     until ping -c1 ${{ secrets.FTP_SERVER }}; do sleep 2; done
-
-      - name: Build Project frontend
+      - name: Install Dependencies (If Changes Detected)
+        if: steps.check-changes.outputs.changes == 'true'
         run: |
-          echo "Deploy frontend"
-          sleep 10s 
+          echo "Changes detected, so running this step."
+  
+      - name: Install Dependencies (If Changes not Detected)
+        if: steps.check-changes.outputs.changes == 'false'
+        run: |
+            echo "Changes not detected, so running this step."
+     
