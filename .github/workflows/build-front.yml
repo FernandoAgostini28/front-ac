@@ -1,12 +1,15 @@
 name: Verificar Alterações no arquivo package.json
 
 on:
+  push:
+    branches:
+        - main
   pull_request:
     branches:
       - main
     types:
-      - opened
-      - synchronize
+    - opened
+    - synchronize
 
 jobs:
   check-changes:
