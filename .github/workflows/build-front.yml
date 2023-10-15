@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Check for changes in package.json
         id: check-package-json
-        uses: changesets/action@v4
+        uses: changesets/action@v3
         with:
           file-paths: package.json
 
