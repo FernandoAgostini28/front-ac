@@ -11,21 +11,22 @@ jobs:
       - name: Get latest code
         uses: actions/checkout@v2
       - name: Verificar Alterações no package.json ou package-lock.json
-        id: check-changes # Defina um ID para esta etapa para acessar suas saídas
+        id: check-changes
         run: |
           if [[ -n $(git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- package.json package-lock.json) ]]; then
+              echo "Changes detected, so running this step."
               echo "changes=true" >> $GITHUB_ENV
           else
+              echo "No changes detected, so running this step."
               echo "changes=false" >> $GITHUB_ENV
           fi
       
       - name: Install Dependencies (If Changes Detected)
         if: steps.check-changes.outputs.changes == 'true'
         run: |
-          echo "Changes detected, so running this step."
+          echo "Running 'Install Dependencies' because changes were detected."
   
       - name: Install Dependencies (If Changes not Detected)
         if: steps.check-changes.outputs.changes == 'false'
         run: |
-          echo "Changes not detected, so running this stepss."
-     
+          echo "Running 'Install Dependencies' because no changes were detected."
