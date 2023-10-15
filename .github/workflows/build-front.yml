@@ -30,5 +30,5 @@ jobs:
           if [[ "${{ steps.check-package-json.outputs.changes }}" == "true" ]]; then
             echo "Changes detected in the last Pull Request."
           else
-            echo "No changes detected in the last Pull Request."
+            echo "No changes detected in the last Pull Requestsss"
           fi
