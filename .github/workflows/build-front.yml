@@ -16,35 +16,16 @@ jobs:
       - name: Checkout o repositório
         uses: actions/checkout@v2
 
-      - name: Get previous PR number
-        id: get-previous-pr-number
-        run: |
-          # Defina o número da PR anterior aqui ou use lógica para determinar automaticamente
-          PREVIOUS_PR_NUMBER=1
-          echo "PREVIOUS_PR_NUMBER=$PREVIOUS_PR_NUMBER" >> $GITHUB_ENV
-
-      - name: Get previous PR commit
-        id: get-previous-commit
-        run: |
-          PREVIOUS_PR_NUMBER=${{ env.PREVIOUS_PR_NUMBER }}
-          if [ -n "$PREVIOUS_PR_NUMBER" ]; then
-            PREVIOUS_SHA=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              "https://api.github.com/repos/${{ github.repository }}/pulls/$PREVIOUS_PR_NUMBER" | jq -r '.head.sha')
-            echo "PREVIOUS_SHA=$PREVIOUS_SHA" >> $GITHUB_ENV
-          fi
-        env:
-          PREVIOUS_PR_NUMBER: ${{ env.PREVIOUS_PR_NUMBER }}
-
       - name: Get changes for PR
         run: |
-          CHANGES=$(git diff --name-only $PREVIOUS_SHA ${{ github.event.pull_request.head.sha }})
+          CHANGES=$(git diff --name-only origin/main...${{ github.event.pull_request.head.ref }})
           echo "CHANGES=$CHANGES" >> $GITHUB_ENV
 
       - name: Compare changes
         run: |
           if [[ "${{ env.CHANGES }}" == *"package.json"* ]]; then
-            echo "O arquivo package.json foi modificado na PR atual em relação à PR anterior."
+            echo "O arquivo package.json foi modificado na PR atual em relação à branch principal."
             # Adicione comandos adicionais que você deseja executar com base na alteração do package.json.
           else
-            echo "O arquivo package.json não foi modificado na PR atual em relação à PR anterior."
+            echo "O arquivo package.json não foi modificado na PR atual em relação à branch principal."
           fi
