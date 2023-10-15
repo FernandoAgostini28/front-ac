@@ -1,15 +1,12 @@
 name: Verificar Alterações no arquivo package.json
 
 on:
-  push:
-    branches:
-        - main
   pull_request:
     branches:
       - main
     types:
-    - opened
-    - synchronize
+      - opened
+      - synchronize
 
 jobs:
   check-changes:
@@ -19,23 +16,31 @@ jobs:
       - name: Checkout o repositório
         uses: actions/checkout@v2
 
-      - name: Check for changes in package.json
-        id: check-package-json
+      - name: Get previous PR number
+        id: get-previous-pr-number
         run: |
-          if [[ $(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep 'package.json') ]]; then
-          echo "true" 
-          echo "CHANGES=true" >> $GITHUB_ENV
-          else
-          echo "false" 
-          echo "CHANGES=false" >> $GITHUB_ENV
-          fi
+          PREVIOUS_PR_NUMBER=$((github.event.pull_request.number - 1))
+          echo "PREVIOUS_PR_NUMBER=$PREVIOUS_PR_NUMBER" >> $GITHUB_ENV
 
-      - name: Verificar CHANGES
+      - name: Get previous PR commit
+        id: get-previous-commit
         run: |
-          if [[ "$CHANGES" == "true" ]]; then
-            echo "CHANGES é verdadeiro. Faça algo aqui."
-          else
-            echo "CHANGES é falso. Faça outra coisa aqui."
-          fi
+          # Obtenha o SHA do commit da PR anterior
+          PREVIOUS_SHA=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls/${{ env.PREVIOUS_PR_NUMBER }}" | jq -r '.head.sha')
+          echo "PREVIOUS_SHA=$PREVIOUS_SHA" >> $GITHUB_ENV
 
-      
+      - name: Get changes for PR
+        run: |
+          # Obtenha as alterações entre o commit anterior e o commit atual
+          CHANGES=$(git diff --name-only $PREVIOUS_SHA ${{ github.event.pull_request.head.sha }})
+          echo "CHANGES=$CHANGES" >> $GITHUB_ENV
+
+      - name: Compare changes
+        run: |
+          if [[ "${{ env.CHANGES }}" == *"package.json"* ]]; then
+            echo "O arquivo package.json foi modificado na PR atual em relação à PR anterior."
+            # Adicione comandos adicionais que você deseja executar com base na alteração do package.json.
+          else
+            echo "O arquivo package.json não foi modificado na PR atual em relação à PR anterior."
+          fi
