@@ -1,7 +1,5 @@
-name: Push to master
-
 on:
-  pull_request:
+  push:
     branches:
       - main
 
@@ -10,11 +8,10 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-
       - name: Get latest code
-        uses: actions/checkout@v3
-
+        uses: actions/checkout@v2
       - name: Verificar Alterações no package.json ou package-lock.json
+        id: check-changes # Defina um ID para esta etapa para acessar suas saídas
         run: |
           if [[ -n $(git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- package.json package-lock.json) ]]; then
               echo "changes=true" >> $GITHUB_ENV
@@ -30,5 +27,5 @@ jobs:
       - name: Install Dependencies (If Changes not Detected)
         if: steps.check-changes.outputs.changes == 'false'
         run: |
-            echo "Changes not detected, so running this step."
+          echo "Changes not detected, so running this step."
      
