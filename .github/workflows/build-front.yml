@@ -23,12 +23,8 @@ jobs:
       - name: Checkout o repositório
         uses: actions/checkout@v2
 
-      # - name: Get changes in package.json
-      #   id: get-changes
-      #   run: git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep 'package.json'
 
       - name: Check for changes in package.json
-        id: check-package-json
         run: |
           if [[ git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep 'package.json' ]]; then
             echo "::set-output name=changes::true"
