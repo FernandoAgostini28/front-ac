@@ -23,7 +23,7 @@ jobs:
           echo "true" 
           echo "::set-env name=changespack::true"
           else
-          echo "true" 
+          echo "false" 
           echo "::set-env name=changespack::false"
           fi
 
