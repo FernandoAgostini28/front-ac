@@ -21,10 +21,10 @@ jobs:
         run: |
           if [[ $(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep 'package.json') ]]; then
           echo "true" 
-          echo "::set-env name=changespack::true"
+          echo "CHANGES=true" >> $GITHUB_ENV
           else
           echo "false" 
-          echo "::set-env name=changespack::false"
+          echo "CHANGES=false" >> $GITHUB_ENV
           fi
 
       
