@@ -17,7 +17,7 @@ jobs:
       - name: Verificar Alterações no package.json ou package-lock.json
         run: |
           if [[ -n $(git diff --name-only ${{ github.event.before }} ${{ github.sha }} -- package.json package-lock.json) ]]; then
-              echo echo "changes=true" >> $GITHUB_ENV
+              echo "changes=true" >> $GITHUB_ENV
           else
               echo "changes=false" >> $GITHUB_ENV
           fi
