@@ -27,4 +27,12 @@ jobs:
           echo "CHANGES=false" >> $GITHUB_ENV
           fi
 
+      - name: Verificar CHANGES
+        run: |
+          if [[ "$CHANGES" == "true" ]]; then
+            echo "CHANGES é verdadeiro. Faça algo aqui."
+          else
+            echo "CHANGES é falso. Faça outra coisa aqui."
+          fi
+
       
