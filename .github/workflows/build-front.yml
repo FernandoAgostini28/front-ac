@@ -1,31 +1,53 @@
 name: Verificar Alterações no arquivo package.json
 
 on:
-  pull_request:
+  push:
     branches:
       - main
-    types:
-      - opened
-      - synchronize
 
 jobs:
   check-changes:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout o repositório
-        uses: actions/checkout@v2
+      # - name: Checkout o repositório
+      #   uses: actions/checkout@v2
 
-      - name: Get changes for PR
-        run: |
-          CHANGES=$(git diff --name-only origin/main...${{ github.event.pull_request.head.ref }})
-          echo "CHANGES=$CHANGES" >> $GITHUB_ENV
+      # - name: Get changes for PR
+      #   run: |
+      #     CHANGES=$(git diff --name-only origin/main...${{ github.event.pull_request.head.ref }})
+      #     echo "CHANGES=$CHANGES" >> $GITHUB_ENV
 
-      - name: Compare changes
+      # - name: Compare changes
+      #   run: |
+      #     if [[ "${{ env.CHANGES }}" == *"package.json"* ]]; then
+      #       echo "O arquivo package.json foi modificado na PR atual em relação à branch principal."
+      #       # Adicione comandos adicionais que você deseja executar com base na alteração do package.json.
+      #     else
+      #       echo "O arquivo package.json não foi modificado na PR atual em relação à branch principal."
+      #     fi
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: ${{ github.event_name == 'push' && 2 || 0 }}
+        
+      - name: Get changed files
+        id: changed-files
         run: |
-          if [[ "${{ env.CHANGES }}" == *"package.json"* ]]; then
-            echo "O arquivo package.json foi modificado na PR atual em relação à branch principal."
-            # Adicione comandos adicionais que você deseja executar com base na alteração do package.json.
+          if ${{ github.event_name == 'push' }}; then
+            echo "changed_files=$(git diff --name-only -r HEAD^1 HEAD | xargs)" >> $GITHUB_ENV
           else
-            echo "O arquivo package.json não foi modificado na PR atual em relação à branch principal."
+            echo "changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | xargs)" >> $GITHUB_ENV
           fi
+        
+      - name: Check for package.json changes
+        run: |
+          changespack=false
+          for file in ${{ env.changed_files }}; do
+            if [[ "$file" == "package.json" ]]; then
+                changespack=true
+                break
+            fi
+          done
+          echo "changespack=$changespack" >> $GITHUB_ENV
